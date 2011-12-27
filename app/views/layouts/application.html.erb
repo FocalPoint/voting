@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Voting</title>
+  <%= stylesheet_link_tag    "application" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<%= link_to "Read Questions", root_url %> | 
+<% if session[:uid] %>
+  <%=link_to "Sign Out", logout_url %><p>
+<% else %>
+  <%=link_to "Sign In", login_url %><p>
+<% end %>
+<%=notice%><p>
+<%= yield %>
+
+</body>
+</html>

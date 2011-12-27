@@ -1,0 +1,6 @@
+<%= form_for @q, :url => sent_url do |f| %>
+<%= f.collection_select :subject_id, Subject.all, :id, :subject, :prompt => true %>
+<%= f.text_field :question %>
+<%= f.hidden_field :user_id, :value => session[:uid]  %>
+<%= f.submit %>
+<% end %>

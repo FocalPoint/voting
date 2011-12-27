@@ -1,0 +1,12 @@
+Your profile:<br>
+
+<%=@user.name%><br>
+<%=@user.email%><br>
+<% if @questions_asked.nil? %>
+  hey
+<% else %>
+  <% @questions_asked.each do |q| %>
+    <ul><%= q.question %> (<%=q.subject.subject%> question) </ul>
+  <% end %>
+<% end %>
+<%=link_to "Ask a question", ask_url %>

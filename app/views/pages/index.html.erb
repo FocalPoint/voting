@@ -1,0 +1,3 @@
+<% @questions.each do |q| %>
+  <ul><%= link_to q.question, show_url(:q_id => q.id) %> (<%=q.answers.count%> answers)</ul>	
+<% end %>
