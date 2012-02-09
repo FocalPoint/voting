@@ -1,7 +1,8 @@
 class PagesController < ApplicationController
 
 	def index
-	  @questions = Question.all
+	  #@questions = Question.all
+	  @questions = Question.find(:all, :include => :answers, :order => "answers.updated_at DESC")
 	end
 	
 	def show
@@ -22,7 +23,7 @@ class PagesController < ApplicationController
 
   	  else
  
-  		redirect_to root_url
+  		redirect_to root_url, :notice => "Please login to answer a question. Thanks!"
   	  end
     end
 
@@ -56,13 +57,18 @@ class PagesController < ApplicationController
 	    if AnswerVote.where("user_id = ? AND answer_id = ?", session[:uid], params[:a]).count > 0
 	      redirect_to show_url(:q_id => params[:q]), :notice => "You only can vote once per answer."
 	    else
-	      vote = AnswerVote.new do |v|
-	        v.user_id = session[:uid]
-	        v.answer_id = params[:a]
-	        v.result = 1
+	      arr = Answer.find_by_sql ["SELECT answer FROM Answers WHERE id = ? AND user_id = ?", params[:a], session[:uid]]
+	      if arr.count > 0
+	      	redirect_to show_url(:q_id => params[:q]), :notice => "You can't vote on your own answer. Sorry."
+	      else
+	      	vote = AnswerVote.new do |v|
+	        	v.user_id = session[:uid]
+	        	v.answer_id = params[:a]
+	        	v.result = 1
+	      	end
+	      	vote.save
+	      	redirect_to show_url(:q_id => params[:q])
 	      end
-	      vote.save
-	      redirect_to show_url(:q_id => params[:q])
 	    end
 	  else
 	    redirect_to login_url
@@ -79,7 +85,7 @@ class PagesController < ApplicationController
 	      if arr.count > 0
 	        redirect_to show_url(:q_id => params[:q]), :notice => "You can't vote on your own answer. Sorry."
 	      else
-	      raise arr.count.inspect
+	      #raise arr.count.inspect
 	        vote = AnswerVote.new do |v|
 	          v.user_id = session[:uid]
 	          v.answer_id = params[:a]
