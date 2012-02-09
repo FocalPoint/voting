@@ -1,12 +1,14 @@
 Your profile:<br>
 
 <%=@user.name%><br>
-<%=@user.email%><br>
-<% if @questions_asked.nil? %>
-  hey
+<%=@user.email%><br>	
+<% if @questions_asked.length == 0 %>
+<p>
+  You have yet to ask any questions. Please feel free to ask away!
 <% else %>
   <% @questions_asked.each do |q| %>
     <ul><%= q.question %> (<%=q.subject.subject%> question) </ul>
   <% end %>
 <% end %>
+<p>	
 <%=link_to "Ask a question", ask_url %>

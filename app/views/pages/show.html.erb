@@ -1,7 +1,10 @@
-<%= @q[0].question %>
+<%= @q[0].question %> 
+<% if session[:uid] %>
+	comments?
+<% end %>
 <% if @answers.count > 0 %>
   <% @answers.each do |a| %>
-    <ul><%= AnswerVote.sum(:result, :conditions => ["answer_id = ?", a.id])%> | <%=link_to "Up Vote", up_vote_path(:a => a.id, :q => @q[0].id)%> | <%=link_to "Down Vote", down_vote_path(:a => a.id, :q => @q[0].id)%> | <%= a.answer %></ul>
+    <ul><%= AnswerVote.sum(:result, :conditions => ["answer_id = ?", a.id])%> | <%=link_to "Up Vote", up_vote_path(:a => a.id, :q => @q[0].id)%> | <%=link_to "Down Vote", down_vote_path(:a => a.id, :q => @q[0].id)%> | <%= a.answer %> | <%= a.updated_at.strftime("%A, %B %Y")%></ul>
   <% end %>
 <% else %>
   <ul>no answers as of yet, be the first!</ul>
@@ -9,5 +12,5 @@
 <%= form_tag add_answer_url do  %>
 <%= text_area_tag 'answer' %>
 <%= hidden_field_tag(:q_id, @q[0].id) %>	
-<%= submit_tag %>
+<%= submit_tag "Send Your Answer"%>
 <% end %>

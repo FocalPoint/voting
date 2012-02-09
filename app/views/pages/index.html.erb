@@ -1,3 +1,8 @@
 <% @questions.each do |q| %>
-  <ul><%= link_to q.question, show_url(:q_id => q.id) %> (<%=q.answers.count%> answers)</ul>	
+  <ul><%= link_to q.question, show_url(:q_id => q.id) %> (<%=q.answers.count%> answers) | <%=q.subject.subject%> | asked <%=time_ago_in_words(q.updated_at)%></ul>	
 <% end %>
+
+
+		      
+
+		      
